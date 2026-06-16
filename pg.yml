@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  postgress:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    restart: unless-stopped
+
+# Общая сеть для обоих контейнеров
+networks:
+  app_network:
+    driver: bridge
+
+# Тома для постоянного хранения данных
+volumes:
+  postgres_data:
+    driver: local
