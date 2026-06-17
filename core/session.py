@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from core.config import settings
-import redis
+
 
 
 DATABASE_URL = settings.get_db_url()

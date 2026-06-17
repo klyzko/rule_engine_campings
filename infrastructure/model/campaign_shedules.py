@@ -5,10 +5,9 @@ from typing import Optional
 from sqlalchemy import ForeignKey, Time, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from infrastructure.model.base import Base
+from infrastructure.model.base import Base,CampaignStatus
+from sqlalchemy.orm import relationship
 
-# Предполагаем, что Base и Campaign определены ранее
-# from models import Base, Campaign
 
 class CampaignSchedule(Base):
     __tablename__ = "campaign_schedules"
@@ -31,7 +30,7 @@ class CampaignSchedule(Base):
     )
 
     start_time: Mapped[time] = mapped_column(
-        Time(timezone=False),  # без таймзоны для хранения локального времени
+        Time(timezone=False),
         nullable=False
     )
 
@@ -40,8 +39,8 @@ class CampaignSchedule(Base):
         nullable=False
     )
 
-    # Уникальное ограничение: у одной кампании не может быть двух окон в один день недели
+    campaign = relationship("CampaignModel", back_populates="schedules")
     __table_args__ = (
         UniqueConstraint('campaign_id', 'day_of_week', name='uq_campaign_day'),
-        # Дополнительная проверка, что start_time < end_time (лучше на уровне приложения или триггера)
+        # Дополнительная проверка, что start_time < end_time
     )

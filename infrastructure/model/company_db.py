@@ -5,15 +5,9 @@ from uuid import uuid4
 from sqlalchemy import Enum, Numeric, DateTime, Boolean, Integer, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from infrastructure.model.base import Base
-
-# base class
+from infrastructure.model.base import Base,CampaignStatus
 
 
-# Enum для статусов
-class CampaignStatus(str, Enum):
-    ACTIVE = "active"
-    PAUSED = "paused"
 
 # Модель таблицы
 class Campaign(Base):
