@@ -10,7 +10,7 @@ def start_app():
 # Подключение роутеров
 app.include_router(company_router, prefix="")
 app.include_router(schedule_router, prefix="/api/v1")
-#app.include_router(evaluate_router, prefix="/api/v1")
+app.include_router(evaluate_router, prefix="/api/v1")
 if __name__ == "__main__":
     start_app()
 
