@@ -6,15 +6,12 @@ from enum import Enum
 from datetime import datetime
 
 class CampaignStatus(str, Enum):
-    ACTIVE = "active"
-    PAUSED = "paused"
-
+    ACTIVE = "ACTIVE"
+    PAUSED = "PAUSED"
 @dataclass
 class Company:
-    id:UUID|None
     name:str|None
     current_status:CampaignStatus|None
-    target_status:CampaignStatus|None
     is_managed:bool|None
     budget_limit:int|None
     spend_today:bool|None
@@ -23,3 +20,5 @@ class Company:
     schedule_enabled:bool|None
     created_at:datetime|None
     updated_at:datetime|None
+    id: UUID | None = None
+    target_status: CampaignStatus | None = None

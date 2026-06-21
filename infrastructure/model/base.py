@@ -3,8 +3,8 @@ from enum import Enum
 
 
 class CampaignStatus(str, Enum):
-    ACTIVE = "active"
-    PAUSED = "paused"
+    ACTIVE = "ACTIVE"
+    PAUSED = "PAUSED"
 
 class Base(DeclarativeBase):
     pass

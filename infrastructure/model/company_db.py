@@ -3,10 +3,11 @@ from typing import Optional
 from uuid import uuid4
 
 from sqlalchemy import Enum, Numeric, DateTime, Boolean, Integer, func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column,relationship
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from infrastructure.model.base import Base,CampaignStatus
 
+campaign = relationship("Campaign", back_populates="schedules")
 
 
 # Модель таблицы
@@ -20,11 +21,15 @@ class Campaign(Base):
     )
     name: Mapped[str] = mapped_column(nullable=False)
     current_status: Mapped[CampaignStatus] = mapped_column(
-        Enum(CampaignStatus, name="campaign_status_enum"),
+        Enum(CampaignStatus,
+             name="campaign_status_enum",
+             create_type=False),  # ← Ключевое изменение
         nullable=False
     )
     target_status: Mapped[Optional[CampaignStatus]] = mapped_column(
-        Enum(CampaignStatus, name="campaign_status_enum"),
+        Enum(CampaignStatus,
+             name="campaign_status_enum",
+             create_type=False),  # ← Ключевое изменение
         nullable=True
     )
     is_managed: Mapped[bool] = mapped_column(default=False)
@@ -51,3 +56,4 @@ class Campaign(Base):
         onupdate=func.now(),
         nullable=False
     )
+    schedules = relationship("CampaignSchedule", back_populates="campaign")

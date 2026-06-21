@@ -1,17 +1,17 @@
 from pydantic import BaseModel,field_validator,model_validator
-from typing import Optional
+from typing import Optional,List
 from enum import Enum
 from datetime import datetime
 from decimal import Decimal
 
 class status(Enum):
-       active = "active"
-       paused = "paused"
+    ACTIVE = "ACTIVE"
+    PAUSED = "PAUSED"
 
 
 class CompanyBase(BaseModel):
     name:str
-    current_status:status=status.active
+    current_status:status=status.ACTIVE
     #target_status:status=status.paused
     is_managed:bool = True
     budget_limit:Optional[int] = None
@@ -24,11 +24,11 @@ class CompanyBase(BaseModel):
 
 
 class Company_create(CompanyBase):
-    @field_validator('budget_limit','spend_today','stock_days_left','stock_days_min',)
+    @field_validator('budget_limit','spend_today','stock_days_left','stock_days_min')
     @classmethod
-    def validate_and_hash_password(cls, v: str) -> str:
-        if v< 0:
-            raise ValueError('day must be positive')
+    def validate_non_negative(cls, v):
+        if v is not None and v < 0:
+            raise ValueError('value must be non-negative')
         return v
     @model_validator(mode="after")
     def validate_dates(self):
@@ -40,4 +40,6 @@ class Company_create(CompanyBase):
 
 
 class Company_update(CompanyBase):
-    id:int
+    id:int|None
+    target_status: status
+

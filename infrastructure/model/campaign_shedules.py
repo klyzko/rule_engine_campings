@@ -39,8 +39,4 @@ class CampaignSchedule(Base):
         nullable=False
     )
 
-    campaign = relationship("CampaignModel", back_populates="schedules")
-    __table_args__ = (
-        UniqueConstraint('campaign_id', 'day_of_week', name='uq_campaign_day'),
-        # Дополнительная проверка, что start_time < end_time
-    )
+    campaign = relationship("Campaign", back_populates="schedules")

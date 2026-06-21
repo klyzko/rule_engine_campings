@@ -9,6 +9,7 @@ from alembic import context
 
 
 from infrastructure.model.base import Base
+import infrastructure.model
 from core.session import DATABASE_URL
 from pathlib import Path
 import sys
